@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { categories } from "../data/categories";
+import { login } from "../utils/auth";
 
 interface FormData {
   name: string;
@@ -64,6 +66,7 @@ const cities = [
 ];
 
 export default function RegisterSpecialist() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -98,8 +101,13 @@ export default function RegisterSpecialist() {
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
-    // Здесь будет логика отправки данных
-    // После успешной регистрации редирект на профиль
+    // Моковая авторизация после регистрации
+    login({
+      type: "specialist",
+      email: "specialist@example.com",
+      name: formData.name || "Специалист"
+    });
+    router.push("/");
   };
 
   const toggleCategory = (categorySlug: string) => {

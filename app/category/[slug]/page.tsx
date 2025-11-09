@@ -13,7 +13,7 @@ const mockMasters = [
   {
     id: 1,
     name: "Иван Петров",
-    city: "Москва",
+    city: "Астана",
     rating: 4.8,
     reviewsCount: 24,
     price: 5000,
@@ -24,7 +24,7 @@ const mockMasters = [
   {
     id: 2,
     name: "Сергей Смирнов",
-    city: "Москва",
+    city: "Астана",
     rating: 4.9,
     reviewsCount: 45,
     price: 7000,
@@ -46,7 +46,7 @@ const mockMasters = [
   {
     id: 4,
     name: "Дмитрий Волков",
-    city: "Москва",
+    city: "Астана",
     rating: 5.0,
     reviewsCount: 32,
     price: 8500,
@@ -57,7 +57,7 @@ const mockMasters = [
   {
     id: 5,
     name: "Михаил Новиков",
-    city: "Москва",
+    city: "Астана",
     rating: 4.6,
     reviewsCount: 15,
     price: 4000,
@@ -68,7 +68,7 @@ const mockMasters = [
   {
     id: 6,
     name: "Андрей Лебедев",
-    city: "Москва",
+    city: "Астана",
     rating: 4.9,
     reviewsCount: 56,
     price: 6000,

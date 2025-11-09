@@ -1,7 +1,9 @@
 "use client";
 
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import { categories } from "../data/categories";
+import { login } from "../utils/auth";
 
 interface FormData {
   taskName: string;
@@ -22,6 +24,7 @@ const steps = [
 ];
 
 export default function RegisterClient() {
+  const router = useRouter();
   const [currentStep, setCurrentStep] = useState(1);
   const [isSidebarCollapsed, setIsSidebarCollapsed] = useState(false);
   const [isMobileSidebarOpen, setIsMobileSidebarOpen] = useState(false);
@@ -55,8 +58,13 @@ export default function RegisterClient() {
 
   const handleSubmit = () => {
     console.log("Form submitted:", formData);
-    // Здесь будет логика отправки данных
-    // После успешной регистрации редирект на главную или профиль
+    // Моковая авторизация после регистрации
+    login({
+      type: "client",
+      email: "client@example.com",
+      name: formData.taskName || "Клиент"
+    });
+    router.push("/");
   };
 
   const handleTaskNameChange = (value: string) => {

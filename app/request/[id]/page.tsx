@@ -17,7 +17,7 @@ export default async function RequestDetail({ params }: { params: Promise<{ id: 
     client: {
       name: "Анна Смирнова",
       avatar: "",
-      location: "Москва"
+      location: "Астана"
     },
     images: [1, 2, 3]
   };

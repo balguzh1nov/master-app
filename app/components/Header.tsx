@@ -2,20 +2,21 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
-import { usePathname } from "next/navigation";
-
-type UserType = "guest" | "client" | "specialist";
+import { usePathname, useRouter } from "next/navigation";
+import { getUserType, logout, type UserType } from "../utils/auth";
 
 interface HeaderProps {
   userType?: UserType;
   activePage?: string;
 }
 
-export default function Header({ userType = "guest", activePage }: HeaderProps) {
+export default function Header({ userType: propUserType, activePage }: HeaderProps) {
   const pathname = usePathname();
+  const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
+  const [currentUserType, setCurrentUserType] = useState<UserType>("guest");
 
   useEffect(() => {
     setMounted(true);
@@ -23,8 +24,28 @@ export default function Header({ userType = "guest", activePage }: HeaderProps) 
       setIsScrolled(window.scrollY > 10);
     };
     window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
+    
+    // Слушаем изменения авторизации
+    const handleAuthChange = () => {
+      setCurrentUserType(getUserType());
+    };
+    window.addEventListener("auth-change", handleAuthChange);
+    handleAuthChange(); // Инициализация
+    
+    return () => {
+      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("auth-change", handleAuthChange);
+    };
   }, []);
+
+  // Используем propUserType если передан, иначе берем из auth
+  const userType = propUserType || currentUserType;
+
+  const handleLogout = () => {
+    logout();
+    router.push("/");
+    setIsMobileMenuOpen(false);
+  };
 
   // Определяем активную страницу автоматически, если не передана явно
   const getActivePage = (href: string) => {
@@ -132,6 +153,15 @@ export default function Header({ userType = "guest", activePage }: HeaderProps) 
                   </span>
                 </Link>
 
+                {/* Logout Button - показываем с sm экрана */}
+                <button
+                  onClick={handleLogout}
+                  className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-600 hover:text-gray-900"
+                  title="Выйти"
+                >
+                  <span className="text-sm font-medium">Выйти</span>
+                </button>
+
                 {/* Settings Link - показываем с lg экрана */}
                 <Link
                   href="/settings"
@@ -197,6 +227,12 @@ export default function Header({ userType = "guest", activePage }: HeaderProps) 
                   >
                     Настройки
                   </Link>
+                  <button
+                    onClick={handleLogout}
+                    className="px-4 py-3 rounded-lg text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors text-left w-full"
+                  >
+                    Выйти
+                  </button>
                 </>
               )}
             </nav>

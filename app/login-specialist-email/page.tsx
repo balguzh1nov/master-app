@@ -2,16 +2,24 @@
 
 import Link from "next/link";
 import { useState } from "react";
+import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
+import { login } from "../utils/auth";
 
 export default function LoginSpecialistEmail() {
+  const router = useRouter();
   const [email, setEmail] = useState("");
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-    // Здесь будет логика отправки кода
-    console.log("Отправка кода на", email);
+    // Моковая авторизация
+    login({
+      type: "specialist",
+      email: email || "specialist@example.com",
+      name: "Специалист"
+    });
+    router.push("/");
   };
 
   return (

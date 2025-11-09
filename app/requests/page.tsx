@@ -24,7 +24,7 @@ export default function Requests() {
                     <div className={`w-10 h-10 bg-gray-200 ${idx % 2 === 0 ? 'rounded-xl' : 'rounded-full'} flex-shrink-0`}></div>
                     <div className="flex-1 min-w-0">
                       <p className="font-semibold text-gray-900 truncate">Анна Смирнова</p>
-                      <p className="text-sm text-gray-500">Москва</p>
+                      <p className="text-sm text-gray-500">Астана</p>
                     </div>
                   </div>
                   <h3 className="text-base sm:text-lg font-semibold text-gray-900 mb-2">

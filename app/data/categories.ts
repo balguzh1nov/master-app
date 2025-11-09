@@ -10,6 +10,7 @@ export interface Category {
   description: string;
   icon: string;
   bgColor: string;
+  image: string;
   subcategories: Subcategory[];
 }
 
@@ -20,6 +21,7 @@ export const categories: Category[] = [
     description: "Изготовление и установка корпусной мебели на заказ",
     icon: "🪑",
     bgColor: "bg-blue-50",
+    image: "/assets/корпуснаямебель.png",
     subcategories: [
       {
         slug: "кухни-под-заказ",
@@ -54,6 +56,7 @@ export const categories: Category[] = [
     description: "Изготовление, реставрация и перетяжка мягкой мебели",
     icon: "🛋️",
     bgColor: "bg-purple-50",
+    image: "/assets/мягкаямебель.png",
     subcategories: [
       {
         slug: "диваны",
@@ -83,6 +86,7 @@ export const categories: Category[] = [
     description: "Изготовление мебели для офисов и рабочих пространств",
     icon: "💼",
     bgColor: "bg-green-50",
+    image: "/assets/офисноемебель.png",
     subcategories: [
       {
         slug: "рабочие-столы",
@@ -112,6 +116,7 @@ export const categories: Category[] = [
     description: "Изготовление мебели и оборудования для торговли",
     icon: "🏪",
     bgColor: "bg-orange-50",
+    image: "/assets/торговоеоборудование.png",
     subcategories: [
       {
         slug: "витрины",
@@ -141,6 +146,7 @@ export const categories: Category[] = [
     description: "Индивидуальное изготовление мебели по вашим проектам",
     icon: "🔨",
     bgColor: "bg-amber-50",
+    image: "/assets/изготовлениемебелиназаказ.png",
     subcategories: [
       {
         slug: "индивидуальный-проект",
@@ -165,6 +171,7 @@ export const categories: Category[] = [
     description: "Ремонт и восстановление мебели",
     icon: "🔧",
     bgColor: "bg-red-50",
+    image: "/assets/Ремонтиреставрация.png",
     subcategories: [
       {
         slug: "ремонт-фасадов",
@@ -189,6 +196,7 @@ export const categories: Category[] = [
     description: "Сборка и установка мебели",
     icon: "📦",
     bgColor: "bg-teal-50",
+    image: "/assets/Монтажисборка.png",
     subcategories: [
       {
         slug: "сборка-мебели",
@@ -218,6 +226,7 @@ export const categories: Category[] = [
     description: "Дизайн и проектирование мебели",
     icon: "✏️",
     bgColor: "bg-indigo-50",
+    image: "/assets/Дизайнипроектирование.png",
     subcategories: [
       {
         slug: "дизайн-мебели",

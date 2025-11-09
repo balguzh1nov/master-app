@@ -35,7 +35,7 @@ export default function SearchContent() {
     {
       id: 1,
       name: "Иван Петров",
-      city: "Москва",
+      city: "Астана",
       rating: 4.8,
       reviewsCount: 24,
       price: 5000,
@@ -45,7 +45,7 @@ export default function SearchContent() {
     {
       id: 2,
       name: "Сергей Смирнов",
-      city: "Москва",
+      city: "Астана",
       rating: 4.9,
       reviewsCount: 45,
       price: 7000,
@@ -65,7 +65,7 @@ export default function SearchContent() {
     {
       id: 4,
       name: "Дмитрий Волков",
-      city: "Москва",
+      city: "Астана",
       rating: 5.0,
       reviewsCount: 32,
       price: 8500,
@@ -75,7 +75,7 @@ export default function SearchContent() {
     {
       id: 5,
       name: "Михаил Новиков",
-      city: "Москва",
+      city: "Астана",
       rating: 4.6,
       reviewsCount: 15,
       price: 4000,
@@ -85,7 +85,7 @@ export default function SearchContent() {
     {
       id: 6,
       name: "Андрей Лебедев",
-      city: "Москва",
+      city: "Астана",
       rating: 4.9,
       reviewsCount: 56,
       price: 6000,
@@ -178,7 +178,7 @@ export default function SearchContent() {
                 type="text"
                 value={city}
                 onChange={(e) => setCity(e.target.value)}
-                placeholder="Москва"
+                placeholder="Астана"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
               />
             </div>

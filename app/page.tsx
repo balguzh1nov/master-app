@@ -1,12 +1,31 @@
+"use client";
+
 import Link from "next/link";
+import Image from "next/image";
+import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
 import { categories } from "./data/categories";
+import { getUserType, type UserType } from "./utils/auth";
 
 export default function Home() {
+  const [userType, setUserType] = useState<UserType>("guest");
+
+  useEffect(() => {
+    const handleAuthChange = () => {
+      setUserType(getUserType());
+    };
+    window.addEventListener("auth-change", handleAuthChange);
+    handleAuthChange(); // Инициализация
+    
+    return () => {
+      window.removeEventListener("auth-change", handleAuthChange);
+    };
+  }, []);
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
-      <Header userType="guest" activePage="/" />
+      <Header activePage="/" />
 
       {/* Main Content */}
       <main className="w-full lg:max-w-7xl lg:mx-auto px-3 sm:px-4 md:px-8 lg:px-8 py-6 sm:py-8">
@@ -29,7 +48,7 @@ export default function Home() {
                 <input
                   type="text"
                   name="city"
-                  placeholder="Москва"
+                  placeholder="Астана"
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
                 />
               </div>
@@ -83,17 +102,18 @@ export default function Home() {
                 <Link
                   key={category.slug}
                   href={`/category/${category.slug}`}
-                  className={`${category.bgColor} ${radiusClasses[idx]} p-4 sm:p-6 hover:shadow-lg transition-all duration-300 flex flex-col items-center justify-center min-h-[120px] sm:min-h-[160px] group border border-transparent hover:border-gray-200`}
+                  className={`${radiusClasses[idx]} hover:shadow-lg transition-all duration-300 min-h-[100px] sm:min-h-[120px] group border border-gray-200 hover:border-gray-300 overflow-hidden relative aspect-[4/3]`}
                 >
-                  <div className="text-4xl sm:text-5xl md:text-6xl mb-2 sm:mb-4 group-hover:scale-110 transition-transform">
-                    {category.icon}
-                  </div>
-                  <h3 className="text-sm sm:text-base font-semibold text-gray-900 text-center mb-1">
+                  <Image
+                    src={category.image}
+                    alt={category.title}
+                    fill
+                    className="object-cover group-hover:scale-105 transition-transform"
+                    unoptimized
+                  />
+                  <h3 className="absolute top-3 left-3 sm:top-4 sm:left-4 text-base sm:text-lg md:text-xl font-bold text-white drop-shadow-lg">
                     {category.title}
                   </h3>
-                  <p className="text-xs text-gray-600 text-center line-clamp-2">
-                    {category.subcategories.length} подкатегорий
-                  </p>
                 </Link>
               );
             })}
@@ -138,7 +158,7 @@ export default function Home() {
                 reviewRating: 5,
                 reviewText: "Прекрасный специалист! Помогла решить все вопросы быстро и эффективно.",
                 date: "6 ноября 2025",
-                location: "Москва, Котельники",
+                location: "Астана",
                 serviceType: "юристы"
               },
               {
@@ -149,7 +169,7 @@ export default function Home() {
                 reviewRating: 4.5,
                 reviewText: "Хорошая работа, всё сделано аккуратно. Есть небольшие замечания, но в целом доволен.",
                 date: "5 ноября 2025",
-                location: "Москва",
+                location: "Астана",
                 serviceType: "обрезка деревьев"
               },
               {
@@ -160,7 +180,7 @@ export default function Home() {
                 reviewRating: 5,
                 reviewText: "Очень профессиональный подход. Всё объяснила доступно и помогла разобраться.",
                 date: "4 ноября 2025",
-                location: "Москва",
+                location: "Астана",
                 serviceType: "психология"
               },
               {
@@ -171,7 +191,7 @@ export default function Home() {
                 reviewRating: 5,
                 reviewText: "Отличный сервис! Всё перевезли аккуратно и в срок. Спасибо!",
                 date: "3 ноября 2025",
-                location: "Москва, Южный",
+                location: "Астана",
                 serviceType: "перевозка вещей"
               }
             ].map((review, idx) => {
@@ -190,7 +210,14 @@ export default function Home() {
                 >
                   {/* Specialist Info */}
                   <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <div className={`w-10 h-10 sm:w-12 sm:h-12 bg-gray-200 ${idx % 2 === 0 ? 'rounded-xl' : 'rounded-full'} flex-shrink-0`}></div>
+                    <Image
+                      src={`https://i.pravatar.cc/150?img=${idx + 1}`}
+                      alt={review.specialistName}
+                      width={48}
+                      height={48}
+                      className={`w-10 h-10 sm:w-12 sm:h-12 ${idx % 2 === 0 ? 'rounded-xl' : 'rounded-full'} flex-shrink-0 object-cover`}
+                      unoptimized
+                    />
                     <div className="flex-1 min-w-0">
                       <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">{review.specialistName}</h3>
                       <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
@@ -246,14 +273,21 @@ export default function Home() {
               className="block bg-white border border-gray-200 rounded-lg p-4 sm:p-6 hover:shadow-md transition-shadow"
             >
               <div className="flex flex-col sm:flex-row gap-4 sm:gap-6">
-                <div className="w-20 h-20 sm:w-24 sm:h-24 bg-gray-200 rounded-lg flex-shrink-0 mx-auto sm:mx-0"></div>
+                <Image
+                  src={`https://i.pravatar.cc/150?img=${id + 10}`}
+                  alt="Иван Петров"
+                  width={96}
+                  height={96}
+                  className="w-20 h-20 sm:w-24 sm:h-24 rounded-lg flex-shrink-0 mx-auto sm:mx-0 object-cover"
+                  unoptimized
+                />
                 <div className="flex-1 min-w-0">
                   <div className="flex flex-col sm:flex-row sm:items-start sm:justify-between gap-2 sm:gap-4 mb-2">
                     <div className="flex-1 min-w-0">
                       <h3 className="text-lg sm:text-xl font-semibold text-gray-900">
                         Иван Петров
                       </h3>
-                      <p className="text-gray-600 text-xs sm:text-sm">Москва</p>
+                      <p className="text-gray-600 text-xs sm:text-sm">Астана</p>
                     </div>
                     <div className="text-left sm:text-right flex-shrink-0">
                       <div className="flex items-center gap-1 mb-1">

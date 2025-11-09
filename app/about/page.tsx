@@ -32,7 +32,7 @@ export default function About() {
             <div className="space-y-2 text-sm sm:text-base text-gray-600">
               <p>Email: support@mebelchiki.ru</p>
               <p>Телефон: +7 (495) 123-45-67</p>
-              <p>Адрес: Москва, ул. Примерная, д. 1</p>
+              <p>Адрес: Астана, ул. Примерная, д. 1</p>
             </div>
           </div>
 

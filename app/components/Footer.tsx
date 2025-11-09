@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 
 export default function Footer() {
   return (
@@ -87,7 +88,7 @@ export default function Footer() {
             <ul className="space-y-2 text-gray-600">
               <li>Email: support@mebelchiki.ru</li>
               <li>Телефон: +7 (495) 123-45-67</li>
-              <li>Москва, ул. Примерная, д. 1</li>
+              <li>Астана, ул. Примерная, д. 1</li>
             </ul>
           </div>
         </div>
@@ -97,9 +98,54 @@ export default function Footer() {
             © Мебельщики, 2024-2025
           </p>
           <div className="flex gap-4">
-            <div className="w-8 h-8 bg-gray-200 rounded-xl"></div>
-            <div className="w-8 h-8 bg-gray-200 rounded-2xl"></div>
-            <div className="w-8 h-8 bg-gray-200 rounded-xl"></div>
+            <a
+              href="https://wa.me/79951234567"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-xl hover:opacity-80 transition-opacity"
+              aria-label="WhatsApp"
+            >
+              <Image
+                src="https://upload.wikimedia.org/wikipedia/commons/6/6b/WhatsApp.svg"
+                alt="WhatsApp"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-xl"
+                unoptimized
+              />
+            </a>
+            <a
+              href="https://instagram.com/mebelchiki"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-2xl hover:opacity-80 transition-opacity"
+              aria-label="Instagram"
+            >
+              <Image
+                src="https://upload.wikimedia.org/wikipedia/commons/a/a5/Instagram_icon.png"
+                alt="Instagram"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-2xl"
+                unoptimized
+              />
+            </a>
+            <a
+              href="https://t.me/mebelchiki"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="w-8 h-8 rounded-xl hover:opacity-80 transition-opacity"
+              aria-label="Telegram"
+            >
+              <Image
+                src="https://upload.wikimedia.org/wikipedia/commons/8/82/Telegram_logo.svg"
+                alt="Telegram"
+                width={32}
+                height={32}
+                className="w-8 h-8 rounded-xl"
+                unoptimized
+              />
+            </a>
           </div>
         </div>
       </div>

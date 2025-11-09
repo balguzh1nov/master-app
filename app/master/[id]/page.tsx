@@ -23,7 +23,7 @@ export default async function MasterProfile({ params }: { params: Promise<{ id: 
                   <h1 className="text-xl sm:text-2xl md:text-3xl font-bold text-gray-900 mb-2">
                     Иван Петров
                   </h1>
-                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Москва</p>
+                  <p className="text-sm sm:text-base text-gray-600 mb-3 sm:mb-4">Астана</p>
                   <div className="flex flex-col sm:flex-row items-center sm:items-center gap-2 sm:gap-4 mb-3 sm:mb-4">
                     <div className="flex items-center gap-1">
                       <span className="text-yellow-500 text-base sm:text-lg md:text-xl">★</span>
