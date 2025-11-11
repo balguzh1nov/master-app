@@ -7,7 +7,7 @@ import { useLanguage } from "./context";
 export { useLanguage };
 
 type TranslationKey = 
-  | keyof typeof ruTranslations.common
+  | `common.${keyof typeof ruTranslations.common}`
   | `home.${keyof typeof ruTranslations.home}`
   | `header.${keyof typeof ruTranslations.header}`
   | `footer.${keyof typeof ruTranslations.footer}`
