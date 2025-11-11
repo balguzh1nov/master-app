@@ -5,11 +5,23 @@ import Image from "next/image";
 import { useEffect, useState } from "react";
 import Header from "./components/Header";
 import Footer from "./components/Footer";
+import CityInput from "./components/CityInput";
 import { categories } from "./data/categories";
 import { getUserType, type UserType } from "./utils/auth";
+import { useTranslation } from "./i18n/useTranslation";
 
 export default function Home() {
+  const { t } = useTranslation();
   const [userType, setUserType] = useState<UserType>("guest");
+  const [currentSlide, setCurrentSlide] = useState(0);
+  const [city, setCity] = useState("");
+
+  // Рекламные слайды (заглушки)
+  const adSlides = [
+    { id: 1, width: 1200, height: 400 },
+    { id: 2, width: 1200, height: 400 },
+    { id: 3, width: 1200, height: 400 },
+  ];
 
   useEffect(() => {
     const handleAuthChange = () => {
@@ -23,6 +35,15 @@ export default function Home() {
     };
   }, []);
 
+  // Автоматическая смена слайдов
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentSlide((prev) => (prev + 1) % adSlides.length);
+    }, 3500); // 3.5 секунды
+
+    return () => clearInterval(interval);
+  }, [adSlides.length]);
+
   return (
     <div className="min-h-screen bg-gray-50 flex flex-col">
       <Header activePage="/" />
@@ -32,10 +53,10 @@ export default function Home() {
         {/* Hero Section with Search */}
         <div className="mb-8 sm:mb-10">
           <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2">
-            Найдите мебельщика для вашего проекта
+            {t("home.title")}
           </h1>
           <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
-            Более 1000 проверенных специалистов готовы помочь вам
+            {t("home.subtitle")}
           </p>
           
           {/* Search Form - стиль Ozon/Avito */}
@@ -43,25 +64,26 @@ export default function Home() {
             <form action="/search" method="get" className="flex flex-col md:flex-row gap-3 sm:gap-4 items-stretch md:items-end">
               <div className="w-full md:flex-1">
                 <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                  Город
+                  {t("common.city")}
                 </label>
-                <input
-                  type="text"
+                <CityInput
+                  value={city}
+                  onChange={setCity}
                   name="city"
-                  placeholder="Астана"
+                  placeholder={t("home.cityPlaceholder")}
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
                 />
               </div>
               
               <div className="w-full md:flex-1">
                 <label className="block text-xs sm:text-sm font-medium text-gray-700 mb-2">
-                  Категория
+                  {t("common.category")}
                 </label>
                 <select 
                   name="category"
                   className="w-full px-3 sm:px-4 py-2 sm:py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
                 >
-                  <option value="">Все категории</option>
+                  <option value="">{t("common.allCategories")}</option>
                   {categories.map((cat) => (
                     <option key={cat.slug} value={cat.slug}>{cat.title}</option>
                   ))}
@@ -72,7 +94,7 @@ export default function Home() {
                 type="submit"
                 className="w-full md:w-auto bg-primary text-white px-6 sm:px-8 py-2 sm:py-3 rounded-lg hover:bg-blue-600 transition-colors font-medium whitespace-nowrap text-sm sm:text-base"
               >
-                Найти
+                {t("common.find")}
               </button>
             </form>
           </div>
@@ -81,9 +103,9 @@ export default function Home() {
         {/* Categories Section - стиль Ozon/Avito */}
         <section className="mb-8 sm:mb-12">
           <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4 mb-4 sm:mb-6">
-            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">Категории услуг</h2>
+            <h2 className="text-xl sm:text-2xl font-bold text-gray-900">{t("common.categories")}</h2>
             <Link href="/categories" className="text-primary hover:underline text-xs sm:text-sm font-medium">
-              Все категории →
+              {t("home.allCategoriesLink")}
             </Link>
           </div>
           <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-4 gap-3 sm:gap-4">
@@ -120,151 +142,52 @@ export default function Home() {
           </div>
         </section>
 
-        {/* Reviews Section */}
+        {/* Ad Slider Section */}
         <section className="mb-8 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-2">Отзывы</h2>
-          <p className="text-sm sm:text-base text-gray-600 mb-4 sm:mb-6">
-            915462 отзыва оставили клиенты за последние 12 месяцев. Из них 885565 — положительные.
-          </p>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 sm:gap-6">
-            {[
-              {
-                specialistName: "Евгений Шульгин",
-                rating: 5.0,
-                totalReviews: 56,
-                reviewerName: "Диана",
-                reviewRating: 5,
-                reviewText: "Отличный мастер! Всё сделал быстро и качественно. Рекомендую!",
-                date: "сегодня",
-                location: "Десёновское",
-                serviceType: "сборка мебели"
-              },
-              {
-                specialistName: "Сергей Парватов",
-                rating: 4.92,
-                totalReviews: 299,
-                reviewerName: "Александр",
-                reviewRating: 5,
-                reviewText: "Профессионал своего дела. Очень доволен результатом работы.",
-                date: "вчера",
-                location: "м. Марьино",
-                serviceType: "вождение (МКПП)"
-              },
-              {
-                specialistName: "Мария Иванова",
-                rating: 4.95,
-                totalReviews: 128,
-                reviewerName: "Ольга",
-                reviewRating: 5,
-                reviewText: "Прекрасный специалист! Помогла решить все вопросы быстро и эффективно.",
-                date: "6 ноября 2025",
-                location: "Астана",
-                serviceType: "юристы"
-              },
-              {
-                specialistName: "Иван Смирнов",
-                rating: 4.88,
-                totalReviews: 87,
-                reviewerName: "Петр",
-                reviewRating: 4.5,
-                reviewText: "Хорошая работа, всё сделано аккуратно. Есть небольшие замечания, но в целом доволен.",
-                date: "5 ноября 2025",
-                location: "Астана",
-                serviceType: "обрезка деревьев"
-              },
-              {
-                specialistName: "Анна Петрова",
-                rating: 5.0,
-                totalReviews: 234,
-                reviewerName: "Елена",
-                reviewRating: 5,
-                reviewText: "Очень профессиональный подход. Всё объяснила доступно и помогла разобраться.",
-                date: "4 ноября 2025",
-                location: "Астана",
-                serviceType: "психология"
-              },
-              {
-                specialistName: "Дмитрий Козлов",
-                rating: 4.9,
-                totalReviews: 156,
-                reviewerName: "Михаил",
-                reviewRating: 5,
-                reviewText: "Отличный сервис! Всё перевезли аккуратно и в срок. Спасибо!",
-                date: "3 ноября 2025",
-                location: "Астана",
-                serviceType: "перевозка вещей"
-              }
-            ].map((review, idx) => {
-              const radiusClasses = [
-                'rounded-2xl',
-                'rounded-3xl',
-                'rounded-xl',
-                'rounded-2xl',
-                'rounded-3xl',
-                'rounded-xl'
-              ];
-              return (
+          <div className="relative w-full overflow-hidden rounded-xl sm:rounded-2xl bg-white border border-gray-200">
+            <div className="relative h-[200px] sm:h-[300px] md:h-[400px]">
+              {adSlides.map((slide, index) => (
                 <div
-                  key={idx}
-                  className={`bg-white border border-gray-200 ${radiusClasses[idx]} p-4 sm:p-6 hover:shadow-lg transition-all duration-300`}
+                  key={slide.id}
+                  className={`absolute inset-0 transition-opacity duration-500 ${
+                    index === currentSlide ? "opacity-100" : "opacity-0"
+                  }`}
                 >
-                  {/* Specialist Info */}
-                  <div className="flex items-center gap-2 sm:gap-3 mb-3 sm:mb-4">
-                    <Image
-                      src={`https://i.pravatar.cc/150?img=${idx + 1}`}
-                      alt={review.specialistName}
-                      width={48}
-                      height={48}
-                      className={`w-10 h-10 sm:w-12 sm:h-12 ${idx % 2 === 0 ? 'rounded-xl' : 'rounded-full'} flex-shrink-0 object-cover`}
-                      unoptimized
-                    />
-                    <div className="flex-1 min-w-0">
-                      <h3 className="font-semibold text-gray-900 text-sm sm:text-base truncate">{review.specialistName}</h3>
-                      <div className="flex items-center gap-1 text-xs sm:text-sm text-gray-600">
-                        <span className="text-yellow-500">★</span>
-                        <span className="font-semibold">{review.rating}</span>
-                        <span className="truncate">{review.totalReviews} отзывов</span>
-                      </div>
-                    </div>
-                  </div>
-
-                  {/* Review Content */}
-                  <div>
-                    <p className="text-xs sm:text-sm text-gray-600 mb-2">
-                      {review.reviewerName} оставила отзыв
-                    </p>
-                    <div className="flex items-center gap-0.5 mb-2">
-                      {[1, 2, 3, 4, 5].map((star) => {
-                        const isFull = star <= Math.floor(review.reviewRating);
-                        const isHalf = star === Math.ceil(review.reviewRating) && review.reviewRating % 1 !== 0;
-                        return (
-                          <span
-                            key={star}
-                            className={`text-base sm:text-lg ${isFull ? 'text-yellow-500' : isHalf ? 'text-yellow-500 opacity-50' : 'text-gray-300'}`}
-                          >
-                            ★
-                          </span>
-                        );
-                      })}
-                    </div>
-                    <p className="text-gray-700 mb-3 text-sm sm:text-base">{review.reviewText}</p>
-                    <div className="flex flex-wrap gap-1 sm:gap-2 text-xs text-gray-500">
-                      <span>{review.date}</span>
-                      <span>•</span>
-                      <span className="truncate">{review.location}</span>
-                      <span>•</span>
-                      <span className="bg-gray-100 px-2 py-1 rounded-full">{review.serviceType}</span>
+                  <div className="w-full h-full bg-gradient-to-r from-blue-50 to-blue-100 flex items-center justify-center">
+                    <div className="text-center p-4">
+                      <p className="text-gray-600 text-sm sm:text-base mb-2">
+                        Рекламный баннер
+                      </p>
+                      <p className="text-gray-500 text-xs sm:text-sm">
+                        Размер: {slide.width} × {slide.height}px
+                      </p>
                     </div>
                   </div>
                 </div>
-              );
-            })}
+              ))}
+            </div>
+
+            {/* Slide Indicators */}
+            <div className="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex gap-2">
+              {adSlides.map((_, index) => (
+                <button
+                  key={index}
+                  onClick={() => setCurrentSlide(index)}
+                  className={`h-2 rounded-full transition-all duration-300 ${
+                    index === currentSlide
+                      ? "w-8 bg-primary"
+                      : "w-2 bg-gray-300 hover:bg-gray-400"
+                  }`}
+                  aria-label={`Перейти к слайду ${index + 1}`}
+                />
+              ))}
+            </div>
           </div>
         </section>
 
         {/* Masters List */}
         <section className="mb-8 sm:mb-12">
-          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">Специалисты</h2>
+          <h2 className="text-xl sm:text-2xl font-bold text-gray-900 mb-4 sm:mb-6">{t("common.masters")}</h2>
           <div className="space-y-3 sm:space-y-4">
             {[1, 2, 3, 4, 5].map((id) => (
             <Link
@@ -290,12 +213,11 @@ export default function Home() {
                       <p className="text-gray-600 text-xs sm:text-sm">Астана</p>
                     </div>
                     <div className="text-left sm:text-right flex-shrink-0">
-                      <div className="flex items-center gap-1 mb-1">
+                      <div className="flex items-center gap-1">
                         <span className="text-yellow-500 text-sm sm:text-base">★</span>
                         <span className="font-semibold text-sm sm:text-base">4.8</span>
                         <span className="text-gray-500 text-xs sm:text-sm">(24)</span>
                       </div>
-                      <p className="text-gray-600 text-xs sm:text-sm">от 5 000 ₽</p>
                     </div>
                   </div>
                   <p className="text-gray-700 mb-3 text-sm sm:text-base">

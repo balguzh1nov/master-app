@@ -83,13 +83,7 @@ export default async function RequestDetail({ params }: { params: Promise<{ id: 
           </div>
 
           <div className="flex flex-col sm:flex-row gap-3">
-            <Link
-              href={`/chat/${id}`}
-              className="flex-1 bg-primary text-white px-6 py-3 rounded-xl hover:opacity-90 transition-colors font-medium text-center"
-            >
-              Открыть чат
-            </Link>
-            <button className="flex-1 bg-white border-2 border-primary text-primary px-6 py-3 rounded-xl hover:bg-gray-50 transition-colors font-medium">
+            <button className="flex-1 bg-primary text-white px-6 py-3 rounded-xl hover:opacity-90 transition-colors font-medium">
               Откликнуться
             </button>
           </div>

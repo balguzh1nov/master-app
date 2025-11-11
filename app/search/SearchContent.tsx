@@ -3,6 +3,7 @@
 import { useState } from "react";
 import Link from "next/link";
 import { useSearchParams } from "next/navigation";
+import CityInput from "../components/CityInput";
 import { getCategoryBySlug, getSubcategoryBySlug, categories } from "../data/categories";
 
 // Функция для форматирования чисел с фиксированной локалью
@@ -19,10 +20,7 @@ export default function SearchContent() {
   const [city, setCity] = useState(cityParam);
   const [selectedCategory, setSelectedCategory] = useState(categorySlug);
   const [selectedSubcategory, setSelectedSubcategory] = useState(subcategorySlug);
-  const [ratingFilter, setRatingFilter] = useState("");
-  const [priceFrom, setPriceFrom] = useState("");
-  const [priceTo, setPriceTo] = useState("");
-  const [sortBy, setSortBy] = useState("rating");
+  const [sortBy, setSortBy] = useState("");
   const [isFiltersOpen, setIsFiltersOpen] = useState(false);
 
   const category = selectedCategory ? getCategoryBySlug(selectedCategory) : null;
@@ -96,25 +94,10 @@ export default function SearchContent() {
 
   const filteredMasters = masters.filter(master => {
     if (city && master.city.toLowerCase() !== city.toLowerCase()) return false;
-    if (ratingFilter && master.rating < parseFloat(ratingFilter)) return false;
-    if (priceFrom && master.price < parseInt(priceFrom)) return false;
-    if (priceTo && master.price > parseInt(priceTo)) return false;
     return true;
   });
 
-  const sortedMasters = [...filteredMasters].sort((a, b) => {
-    switch (sortBy) {
-      case "price-asc":
-        return a.price - b.price;
-      case "price-desc":
-        return b.price - a.price;
-      case "reviews":
-        return b.reviewsCount - a.reviewsCount;
-      case "rating":
-      default:
-        return b.rating - a.rating;
-    }
-  });
+  const sortedMasters = [...filteredMasters];
 
   return (
     <>
@@ -174,10 +157,9 @@ export default function SearchContent() {
               <label className="block text-sm font-medium text-gray-700 mb-2">
                 Город
               </label>
-              <input
-                type="text"
+              <CityInput
                 value={city}
-                onChange={(e) => setCity(e.target.value)}
+                onChange={setCity}
                 placeholder="Астана"
                 className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
               />
@@ -226,56 +208,12 @@ export default function SearchContent() {
               </div>
             )}
 
-            {/* Rating Filter */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Рейтинг от
-              </label>
-              <select
-                value={ratingFilter}
-                onChange={(e) => setRatingFilter(e.target.value)}
-                className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-              >
-                <option value="">Любой</option>
-                <option value="4">4+</option>
-                <option value="4.5">4.5+</option>
-                <option value="4.7">4.7+</option>
-                <option value="4.9">4.9+</option>
-              </select>
-            </div>
-
-            {/* Price Filter */}
-            <div className="mb-6">
-              <label className="block text-sm font-medium text-gray-700 mb-2">
-                Цена, ₽
-              </label>
-              <div className="flex gap-2">
-                <input
-                  type="number"
-                  value={priceFrom}
-                  onChange={(e) => setPriceFrom(e.target.value)}
-                  placeholder="От"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-                />
-                <input
-                  type="number"
-                  value={priceTo}
-                  onChange={(e) => setPriceTo(e.target.value)}
-                  placeholder="До"
-                  className="w-full px-3 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-sm"
-                />
-              </div>
-            </div>
-
             {/* Reset Filters */}
             <button
               onClick={() => {
                 setCity("");
                 setSelectedCategory("");
                 setSelectedSubcategory("");
-                setRatingFilter("");
-                setPriceFrom("");
-                setPriceTo("");
               }}
               className="w-full px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors text-sm font-medium"
             >
@@ -286,24 +224,11 @@ export default function SearchContent() {
 
         {/* Main Content */}
         <div className="flex-1">
-          {/* Sort Bar */}
-          <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 mb-6 flex flex-col sm:flex-row items-start sm:items-center justify-between gap-3 sm:gap-4">
+          {/* Results Count */}
+          <div className="bg-white border border-gray-200 rounded-xl p-3 sm:p-4 mb-6">
             <span className="text-xs sm:text-sm text-gray-600">
               Найдено: {sortedMasters.length} специалистов
             </span>
-            <div className="flex flex-col sm:flex-row items-start sm:items-center gap-2 sm:gap-4 w-full sm:w-auto">
-              <span className="text-xs sm:text-sm text-gray-600">Сортировка:</span>
-              <select
-                value={sortBy}
-                onChange={(e) => setSortBy(e.target.value)}
-                className="w-full sm:w-auto px-3 sm:px-4 py-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-primary text-xs sm:text-sm"
-              >
-                <option value="rating">По рейтингу</option>
-                <option value="price-asc">По цене: сначала дешевле</option>
-                <option value="price-desc">По цене: сначала дороже</option>
-                <option value="reviews">По количеству отзывов</option>
-              </select>
-            </div>
           </div>
 
           {/* Masters List */}
@@ -342,12 +267,11 @@ export default function SearchContent() {
                             <p className="text-gray-600 text-xs sm:text-sm">{master.city}</p>
                           </div>
                           <div className="text-left sm:text-right flex-shrink-0">
-                            <div className="flex items-center gap-1 mb-1">
+                            <div className="flex items-center gap-1">
                               <span className="text-yellow-500 text-sm sm:text-base">★</span>
                               <span className="font-semibold text-sm sm:text-base">{master.rating}</span>
                               <span className="text-gray-500 text-xs sm:text-sm">({master.reviewsCount})</span>
                             </div>
-                            <p className="text-gray-900 font-semibold text-sm sm:text-base">от {formatPrice(master.price)} ₽</p>
                           </div>
                         </div>
                         <p className="text-gray-700 mb-3 text-sm sm:text-base">{master.description}</p>

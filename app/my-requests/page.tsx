@@ -41,7 +41,7 @@ export default function MyRequests() {
 
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header userType="client" activePage="/my-requests" />
+      <Header userType="guest" activePage="/my-requests" />
 
       <main className="w-full lg:max-w-7xl lg:mx-auto px-4 sm:px-6 md:px-8 lg:px-8 py-8">
         <h1 className="text-3xl font-bold text-gray-900 mb-6">Мои заявки</h1>
@@ -81,14 +81,8 @@ export default function MyRequests() {
                 </div>
                 <div className="flex flex-col sm:flex-row gap-3">
                   <Link
-                    href={`/chat/${request.masterId}`}
-                    className="flex-1 bg-primary text-white px-6 py-2 rounded-xl hover:opacity-90 transition-colors font-medium text-center"
-                  >
-                    Открыть чат
-                  </Link>
-                  <Link
                     href={`/request/${request.id}`}
-                    className="flex-1 bg-white border-2 border-primary text-primary px-6 py-2 rounded-xl hover:bg-gray-50 transition-colors font-medium text-center"
+                    className="flex-1 bg-primary text-white px-6 py-2 rounded-xl hover:opacity-90 transition-colors font-medium text-center"
                   >
                     Подробнее
                   </Link>

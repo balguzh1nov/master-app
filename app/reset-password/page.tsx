@@ -131,7 +131,7 @@ export default function ResetPassword() {
             )}
 
             <div className="mt-6 text-center">
-              <Link href="/login-client" className="text-primary hover:opacity-80 underline text-sm">
+              <Link href="/login" className="text-primary hover:opacity-80 underline text-sm">
                 Вернуться к входу
               </Link>
             </div>

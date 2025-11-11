@@ -7,10 +7,19 @@ import { useRouter } from "next/navigation";
 import Header from "../components/Header";
 import Footer from "../components/Footer";
 import { login } from "../utils/auth";
+import { useTranslation } from "../i18n/useTranslation";
+import ruTranslations from "../i18n/translations/ru.json";
+import kkTranslations from "../i18n/translations/kk.json";
+import { useLanguage } from "../i18n/useTranslation";
 
 export default function LoginSpecialist() {
   const router = useRouter();
+  const { t } = useTranslation();
+  const { language } = useLanguage();
   const [phone, setPhone] = useState("");
+  
+  const translations = language === "kk" ? kkTranslations : ruTranslations;
+  const faqQuestions = translations.loginSpecialist.faqQuestions as string[];
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -33,26 +42,26 @@ export default function LoginSpecialist() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-16 items-center">
             <div className="text-center lg:text-left space-y-6">
               <div className="inline-block px-4 py-2 bg-blue-50 text-blue-700 rounded-full text-sm font-medium mb-2">
-                Для специалистов
+                {t("loginSpecialist.forSpecialists")}
               </div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-bold text-gray-900 leading-tight">
-                Зарабатывайте на том, что умеете
+                {t("loginSpecialist.heroTitle")}
               </h1>
               <p className="text-lg sm:text-xl md:text-2xl text-gray-600 max-w-xl mx-auto lg:mx-0">
-                Более 500 000 заказов в месяц в приложении «Для профи»
+                {t("loginSpecialist.heroSubtitle")}
               </p>
               <div className="flex flex-wrap gap-4 justify-center lg:justify-start pt-4">
                 <div className="flex items-center gap-2 text-gray-700">
                   <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-sm font-medium">Без комиссии</span>
+                  <span className="text-sm font-medium">{t("loginSpecialist.noCommission")}</span>
                 </div>
                 <div className="flex items-center gap-2 text-gray-700">
                   <svg className="w-5 h-5 text-green-500" fill="currentColor" viewBox="0 0 20 20">
                     <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
                   </svg>
-                  <span className="text-sm font-medium">Мгновенные выплаты</span>
+                  <span className="text-sm font-medium">{t("loginSpecialist.instantPayouts")}</span>
                 </div>
               </div>
             </div>
@@ -83,10 +92,10 @@ export default function LoginSpecialist() {
                   <div className="space-y-6">
               <div>
                       <h2 className="text-2xl sm:text-3xl font-bold text-gray-900 mb-3">
-                        Начните зарабатывать уже сегодня
+                        {t("loginSpecialist.startEarningTitle")}
                 </h2>
                       <p className="text-gray-600 text-base sm:text-lg">
-                  Отправим СМС с кодом подтверждения. Присылать рекламу не будем
+                  {t("loginSpecialist.startEarningDescription")}
                 </p>
                     </div>
                     <div className="space-y-4">
@@ -97,8 +106,8 @@ export default function LoginSpecialist() {
                           </svg>
                         </div>
                         <div>
-                          <p className="font-medium text-gray-900">Быстрая регистрация</p>
-                          <p className="text-sm text-gray-600">Заполните профиль за 5 минут</p>
+                          <p className="font-medium text-gray-900">{t("loginSpecialist.quickRegistration")}</p>
+                          <p className="text-sm text-gray-600">{t("loginSpecialist.quickRegistrationDesc")}</p>
                         </div>
                       </div>
                       <div className="flex items-start gap-3">
@@ -108,8 +117,8 @@ export default function LoginSpecialist() {
                           </svg>
                         </div>
                   <div>
-                          <p className="font-medium text-gray-900">Мгновенный доступ</p>
-                          <p className="text-sm text-gray-600">Начните получать заказы сразу</p>
+                          <p className="font-medium text-gray-900">{t("loginSpecialist.instantAccess")}</p>
+                          <p className="text-sm text-gray-600">{t("loginSpecialist.instantAccessDesc")}</p>
                         </div>
                       </div>
                     </div>
@@ -119,7 +128,7 @@ export default function LoginSpecialist() {
                   <form onSubmit={handleSubmit} className="space-y-6">
                     <div>
                       <label className="block text-sm font-medium text-gray-700 mb-2">
-                        Номер телефона
+                        {t("loginSpecialist.phoneNumber")}
                       </label>
                       <div className="relative">
                         <div className="absolute left-4 top-1/2 -translate-y-1/2 flex items-center gap-2">
@@ -130,7 +139,7 @@ export default function LoginSpecialist() {
                         type="tel"
                         value={phone}
                         onChange={(e) => setPhone(e.target.value)}
-                          placeholder="(999) 123-45-67"
+                          placeholder={t("loginSpecialist.phonePlaceholder")}
                           className="w-full pl-20 pr-4 py-3.5 border-2 border-gray-200 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent text-base transition-all"
                         required
                       />
@@ -140,7 +149,7 @@ export default function LoginSpecialist() {
                     type="submit"
                       className="w-full bg-gray-900 text-white px-6 py-3.5 rounded-xl hover:bg-gray-800 transition-colors font-semibold text-base shadow-lg hover:shadow-xl"
                   >
-                    Войти
+                    {t("loginSpecialist.loginButton")}
                   </button>
                 </form>
 
@@ -152,10 +161,10 @@ export default function LoginSpecialist() {
                       <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
                       </svg>
-                    Зарегистрироваться
+                    {t("loginSpecialist.registerButton")}
                   </Link>
                     <p className="text-xs text-gray-500 text-center mt-3">
-                    После регистрации вы заполните профиль через удобный опросник
+                    {t("loginSpecialist.registerDescription")}
                   </p>
                 </div>
                   <div className="mt-6 text-center">
@@ -163,7 +172,7 @@ export default function LoginSpecialist() {
                     href="/login-specialist-email"
                       className="text-blue-600 hover:text-blue-700 font-medium text-sm transition-colors"
                   >
-                      Войти по email →
+                      {t("loginSpecialist.loginByEmail")}
                   </Link>
                 </div>
                 </div>
@@ -178,36 +187,36 @@ export default function LoginSpecialist() {
         <div className="w-full lg:max-w-7xl lg:mx-auto px-4 sm:px-6 md:px-8 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-            Как это работает?
+            {t("loginSpecialist.howItWorksTitle")}
           </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Простой процесс от регистрации до получения оплаты
+              {t("loginSpecialist.howItWorksSubtitle")}
             </p>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 lg:gap-6">
             {[
               {
                 number: "1",
-                title: "Клиенты создают заказ",
-                description: "Клиенты оставляют заявки на выполнение работ",
+                title: t("loginSpecialist.step1Title"),
+                description: t("loginSpecialist.step1Desc"),
                 icon: "📝"
               },
               {
                 number: "2",
-                title: "Вы выбираете интересный заказ",
-                description: "Просматривайте доступные заказы и выбирайте подходящие",
+                title: t("loginSpecialist.step2Title"),
+                description: t("loginSpecialist.step2Desc"),
                 icon: "🔍"
               },
               {
                 number: "3",
-                title: "Откликаетесь и договариваетесь",
-                description: "Общайтесь с клиентом в чате, обсуждайте детали и цену",
+                title: t("loginSpecialist.step3Title"),
+                description: t("loginSpecialist.step3Desc"),
                 icon: "💬"
               },
               {
                 number: "4",
-                title: "Выполняете заказ и получаете оплату",
-                description: "Получайте оплату напрямую от клиента после выполнения",
+                title: t("loginSpecialist.step4Title"),
+                description: t("loginSpecialist.step4Desc"),
                 icon: "💰"
               }
             ].map((step, idx) => (
@@ -240,10 +249,10 @@ export default function LoginSpecialist() {
         <div className="w-full lg:max-w-7xl lg:mx-auto px-4 sm:px-6 md:px-8 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Выберите удобный тариф
+              {t("loginSpecialist.tariffsTitle")}
           </h2>
             <p className="text-lg text-gray-600 max-w-2xl mx-auto">
-              Прозрачные условия без скрытых платежей
+              {t("loginSpecialist.tariffsSubtitle")}
             </p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 gap-8 max-w-5xl mx-auto">
@@ -253,18 +262,18 @@ export default function LoginSpecialist() {
               </div>
               <div className="mb-4">
                 <span className="inline-block px-3 py-1 bg-orange-100 text-orange-700 rounded-full text-sm font-semibold mb-3">
-                  Популярный
+                  {t("loginSpecialist.tariff1Badge")}
                 </span>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Плата за отклик
+                {t("loginSpecialist.tariff1Title")}
               </h3>
               </div>
               <p className="text-gray-700 leading-relaxed mb-6">
-                Вы платите сразу, за предложение услуг клиенту. Других платежей нет, но не каждый отклик приводит к заказу. Для первого заказа обычно нужно 7-10 откликов
+                {t("loginSpecialist.tariff1Desc")}
               </p>
               <div className="pt-6 border-t border-orange-200">
-                <p className="text-sm text-gray-600">✓ Оплата только за отклик</p>
-                <p className="text-sm text-gray-600 mt-2">✓ Без комиссии с заказа</p>
+                <p className="text-sm text-gray-600">{t("loginSpecialist.tariff1Feature1")}</p>
+                <p className="text-sm text-gray-600 mt-2">{t("loginSpecialist.tariff1Feature2")}</p>
               </div>
             </div>
             <div className="bg-blue-50 rounded-2xl border-2 border-blue-200 p-8 shadow-lg hover:shadow-xl transition-shadow">
@@ -273,18 +282,18 @@ export default function LoginSpecialist() {
               </div>
               <div className="mb-4">
                 <span className="inline-block px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-semibold mb-3">
-                  Для некоторых категорий
+                  {t("loginSpecialist.tariff2Badge")}
                 </span>
                 <h3 className="text-2xl font-bold text-gray-900 mb-2">
-                Комиссия за заказ
+                {t("loginSpecialist.tariff2Title")}
               </h3>
               </div>
               <p className="text-gray-700 leading-relaxed mb-6">
-                Вы платите потом, если получите заказ. Откликнуться можно бесплатно. Тариф откроется после 10 платных откликов. Доступен репетиторам, тренерам, психологам и автоинструкторам
+                {t("loginSpecialist.tariff2Desc")}
               </p>
               <div className="pt-6 border-t border-blue-200">
-                <p className="text-sm text-gray-600">✓ Бесплатные отклики</p>
-                <p className="text-sm text-gray-600 mt-2">✓ Комиссия только с выполненного заказа</p>
+                <p className="text-sm text-gray-600">{t("loginSpecialist.tariff2Feature1")}</p>
+                <p className="text-sm text-gray-600 mt-2">{t("loginSpecialist.tariff2Feature2")}</p>
               </div>
             </div>
           </div>
@@ -297,10 +306,10 @@ export default function LoginSpecialist() {
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 items-center">
             <div className="text-white">
               <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold mb-6">
-                  С приложением «Для профи» ещё удобнее
+                  {t("loginSpecialist.appTitle")}
                 </h2>
               <p className="text-xl text-blue-100 mb-8">
-                  Заказы и чаты с клиентами всегда под рукой
+                  {t("loginSpecialist.appSubtitle")}
                 </p>
               <div className="flex flex-wrap gap-4">
                 <a href="#" className="inline-block">
@@ -347,10 +356,10 @@ export default function LoginSpecialist() {
         <div className="w-full lg:max-w-7xl lg:mx-auto px-4 sm:px-6 md:px-8 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Отзывы специалистов
+              {t("loginSpecialist.reviewsTitle")}
             </h2>
             <p className="text-lg text-gray-600">
-              Более 50 000 специалистов уже работают с нами
+              {t("loginSpecialist.reviewsSubtitle")}
             </p>
           </div>
           <div className="overflow-x-auto pb-4 -mx-4 px-4">
@@ -419,30 +428,20 @@ export default function LoginSpecialist() {
         <div className="w-full lg:max-w-7xl lg:mx-auto px-4 sm:px-6 md:px-8 lg:px-8">
           <div className="text-center mb-12 sm:mb-16">
             <h2 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-900 mb-4">
-              Остались вопросы?
+              {t("loginSpecialist.faqTitle")}
             </h2>
             <p className="text-lg text-gray-600 mb-8">
-              Мы ответим на все ваши вопросы
+              {t("loginSpecialist.faqSubtitle")}
             </p>
             <Link
               href="/register-specialist"
               className="inline-block bg-blue-600 text-white px-8 py-3.5 rounded-xl hover:bg-blue-700 transition-colors font-semibold text-base shadow-lg hover:shadow-xl"
             >
-              Зарегистрироваться
+              {t("loginSpecialist.registerButton")}
             </Link>
           </div>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 max-w-5xl mx-auto">
-            {[
-              "Зачем нам платить?",
-              "Клиенты настоящие?",
-              "Как быстро приходят заказы?",
-              "Можно ли работать без приложения?",
-              "Как происходит оплата?",
-              "Что делать при конфликте с клиентом?",
-              "Можно ли отменить отклик?",
-              "Как повысить рейтинг?",
-              "Есть ли комиссия?"
-            ].map((question, idx) => (
+            {faqQuestions.map((question, idx) => (
               <button
                 key={idx}
                 className={`text-left p-5 bg-gray-50 border-2 border-transparent ${idx % 3 === 0 ? 'rounded-2xl' : idx % 3 === 1 ? 'rounded-xl' : 'rounded-3xl'} hover:border-blue-200 hover:bg-blue-50 transition-all text-base font-medium text-gray-900 shadow-sm hover:shadow-md`}
@@ -467,24 +466,24 @@ export default function LoginSpecialist() {
             18 934 862
           </div>
             <p className="text-xl sm:text-2xl md:text-3xl text-gray-300">
-            клиента доверили дела профи
+            {t("loginSpecialist.trustCounter")}
           </p>
             <div className="mt-12 grid grid-cols-2 md:grid-cols-4 gap-8 max-w-4xl mx-auto">
             <div>
                 <div className="text-3xl sm:text-4xl font-bold mb-2">500K+</div>
-                <div className="text-gray-400 text-sm sm:text-base">Заказов в месяц</div>
+                <div className="text-gray-400 text-sm sm:text-base">{t("loginSpecialist.trustOrders")}</div>
             </div>
             <div>
                 <div className="text-3xl sm:text-4xl font-bold mb-2">50K+</div>
-                <div className="text-gray-400 text-sm sm:text-base">Специалистов</div>
+                <div className="text-gray-400 text-sm sm:text-base">{t("loginSpecialist.trustSpecialists")}</div>
             </div>
             <div>
                 <div className="text-3xl sm:text-4xl font-bold mb-2">4.9</div>
-                <div className="text-gray-400 text-sm sm:text-base">Средний рейтинг</div>
+                <div className="text-gray-400 text-sm sm:text-base">{t("loginSpecialist.trustRating")}</div>
             </div>
             <div>
                 <div className="text-3xl sm:text-4xl font-bold mb-2">24/7</div>
-                <div className="text-gray-400 text-sm sm:text-base">Поддержка</div>
+                <div className="text-gray-400 text-sm sm:text-base">{t("loginSpecialist.trustSupport")}</div>
           </div>
             </div>
           </div>

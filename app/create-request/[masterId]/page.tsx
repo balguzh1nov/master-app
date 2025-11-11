@@ -6,7 +6,7 @@ export default async function CreateRequest({ params }: { params: Promise<{ mast
   const { masterId } = await params;
   return (
     <div className="min-h-screen bg-white flex flex-col">
-      <Header userType="client" />
+      <Header userType="guest" />
 
       <main className="max-w-3xl mx-auto px-4 sm:px-6 md:px-8 lg:px-8 py-8">
         <Link href={`/master/${masterId}`} className="text-primary hover:underline mb-6 inline-block">

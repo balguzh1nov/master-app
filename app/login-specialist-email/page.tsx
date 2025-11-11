@@ -70,14 +70,6 @@ export default function LoginSpecialistEmail() {
             </div>
           </div>
 
-          <div className="mt-6 text-center">
-            <Link
-              href="/login-client"
-              className="text-gray-600 hover:text-primary underline inline-flex items-center gap-1"
-            >
-              Вход для клиентов →
-            </Link>
-          </div>
         </div>
       </main>
       <Footer />

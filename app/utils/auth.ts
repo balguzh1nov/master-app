@@ -1,9 +1,9 @@
 "use client";
 
-export type UserType = "guest" | "client" | "specialist";
+export type UserType = "guest" | "specialist";
 
 export interface AuthUser {
-  type: "client" | "specialist";
+  type: "specialist";
   email?: string;
   phone?: string;
   name?: string;

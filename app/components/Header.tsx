@@ -4,6 +4,7 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { getUserType, logout, type UserType } from "../utils/auth";
+import { useTranslation, useLanguage } from "../i18n/useTranslation";
 
 interface HeaderProps {
   userType?: UserType;
@@ -13,6 +14,8 @@ interface HeaderProps {
 export default function Header({ userType: propUserType, activePage }: HeaderProps) {
   const pathname = usePathname();
   const router = useRouter();
+  const { t } = useTranslation();
+  const { language, setLanguage } = useLanguage();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const [mounted, setMounted] = useState(false);
@@ -55,26 +58,19 @@ export default function Header({ userType: propUserType, activePage }: HeaderPro
   };
 
   const guestLinks = [
-    { href: "/", label: "Главная" },
-    { href: "/help", label: "Помощь" },
-    { href: "/about", label: "О нас" },
-  ];
-
-  const clientLinks = [
-    { href: "/", label: "Главная" },
-    { href: "/my-requests", label: "Мои заявки" },
-    { href: "/my-chats", label: "Мои чаты" },
-    { href: "/help", label: "Помощь" },
+    { href: "/", label: t("common.home") },
+    { href: "/vacancies", label: t("common.vacancies") },
+    { href: "/help", label: t("common.help") },
+    { href: "/about", label: t("common.about") },
   ];
 
   const specialistLinks = [
-    { href: "/", label: "Главная" },
-    { href: "/requests", label: "Заявки" },
-    { href: "/my-chats", label: "Мои чаты" },
-    { href: "/profile", label: "Профиль" },
+    { href: "/", label: t("common.home") },
+    { href: "/vacancies", label: t("common.vacancies") },
+    { href: "/profile", label: t("common.profile") },
   ];
 
-  const links = userType === "client" ? clientLinks : userType === "specialist" ? specialistLinks : guestLinks;
+  const links = userType === "specialist" ? specialistLinks : guestLinks;
 
   return (
     <header 
@@ -90,7 +86,7 @@ export default function Header({ userType: propUserType, activePage }: HeaderPro
             className="flex items-center gap-2 text-xl sm:text-2xl md:text-2xl lg:text-3xl font-bold text-primary hover:opacity-80 transition-opacity"
           >
             <span className="text-2xl sm:text-3xl md:text-3xl lg:text-4xl">🪑</span>
-            <span>Мебельщики</span>
+            <span>{t("header.brand")}</span>
           </Link>
 
           {/* Desktop Navigation - показываем с md экрана */}
@@ -112,44 +108,64 @@ export default function Header({ userType: propUserType, activePage }: HeaderPro
 
           {/* Right Side Actions */}
           <div className="flex items-center gap-2 sm:gap-3 md:gap-4">
+            {/* Language Switcher */}
+            <div className="flex items-center gap-1 border border-gray-300 rounded-lg overflow-hidden">
+              <button
+                onClick={() => setLanguage("ru")}
+                className={`px-2 py-1 text-xs sm:text-sm font-medium transition-colors ${
+                  language === "ru"
+                    ? "bg-primary text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
+                }`}
+                aria-label="Русский"
+              >
+                RU
+              </button>
+              <button
+                onClick={() => setLanguage("kk")}
+                className={`px-2 py-1 text-xs sm:text-sm font-medium transition-colors ${
+                  language === "kk"
+                    ? "bg-primary text-white"
+                    : "bg-white text-gray-700 hover:bg-gray-50"
+                }`}
+                aria-label="Қазақша"
+              >
+                KZ
+              </button>
+            </div>
+
             {userType === "guest" ? (
               <>
-                {/* Tablet/Desktop Login Buttons */}
+                {/* Tablet/Desktop Login Button */}
                 <div className="hidden sm:flex items-center gap-2 md:gap-3">
                   <Link
-                    href="/login-client"
+                    href="/login"
                     className="px-3 py-2 md:px-4 md:py-2 text-gray-700 hover:text-primary transition-colors font-medium text-sm md:text-base"
                   >
-                    Вход
-                  </Link>
-                  <Link
-                    href="/login-specialist"
-                    className="px-3 py-2 md:px-5 md:py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium shadow-sm text-sm md:text-base whitespace-nowrap"
-                  >
-                    Для специалистов
+                    {t("common.login")}
                   </Link>
                 </div>
 
                 {/* Mobile Login Button */}
                 <Link
-                  href="/login-client"
+                  href="/login"
                   className="sm:hidden px-3 py-2 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-sm"
                 >
-                  Вход
+                  {t("common.login")}
                 </Link>
               </>
             ) : (
               <>
                 {/* User Profile - показываем с sm экрана */}
                 <Link
-                  href={userType === "client" ? "/profile" : "/profile"}
+                  href="/profile"
                   className="hidden sm:flex items-center gap-2 px-2 md:px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors"
                 >
                   <div className="w-7 h-7 md:w-8 md:h-8 bg-primary rounded-full flex items-center justify-center text-white font-semibold text-sm md:text-base">
-                    {userType === "client" ? "К" : "С"}
+                    С
                   </div>
                   <span className="hidden md:inline text-sm font-medium text-gray-700">
-                    {userType === "client" ? "Клиент" : "Специалист"}
+                    {t("common.specialist")}
                   </span>
                 </Link>
 
@@ -157,16 +173,16 @@ export default function Header({ userType: propUserType, activePage }: HeaderPro
                 <button
                   onClick={handleLogout}
                   className="hidden sm:flex items-center gap-2 px-3 py-2 rounded-lg hover:bg-gray-50 transition-colors text-gray-600 hover:text-gray-900"
-                  title="Выйти"
+                  title={t("common.logout")}
                 >
-                  <span className="text-sm font-medium">Выйти</span>
+                  <span className="text-sm font-medium">{t("common.logout")}</span>
                 </button>
 
                 {/* Settings Link - показываем с lg экрана */}
                 <Link
                   href="/settings"
                   className="hidden lg:flex items-center justify-center w-9 h-9 md:w-10 md:h-10 rounded-lg hover:bg-gray-50 transition-colors text-gray-600 hover:text-primary"
-                  title="Настройки"
+                  title={t("common.settings")}
                 >
                   <span className="text-lg md:text-xl">⚙️</span>
                 </Link>
@@ -177,7 +193,7 @@ export default function Header({ userType: propUserType, activePage }: HeaderPro
             <button
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)}
               className="md:hidden p-2 rounded-lg hover:bg-gray-50 transition-colors"
-              aria-label="Меню"
+              aria-label={t("common.menu")}
               aria-expanded={isMobileMenuOpen}
             >
               <span className="text-xl sm:text-2xl">{isMobileMenuOpen ? "✕" : "☰"}</span>
@@ -208,11 +224,11 @@ export default function Header({ userType: propUserType, activePage }: HeaderPro
                 <>
                   <div className="border-t border-gray-200 my-2"></div>
                   <Link
-                    href="/login-specialist"
+                    href="/login"
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="px-4 py-3 bg-primary text-white rounded-lg hover:bg-blue-600 transition-colors font-medium text-center"
                   >
-                    Вход для специалистов
+                    {t("common.login")}
                   </Link>
                 </>
               )}
@@ -225,13 +241,13 @@ export default function Header({ userType: propUserType, activePage }: HeaderPro
                     onClick={() => setIsMobileMenuOpen(false)}
                     className="px-4 py-3 rounded-lg text-gray-700 hover:text-primary hover:bg-gray-50 transition-colors"
                   >
-                    Настройки
+                    {t("common.settings")}
                   </Link>
                   <button
                     onClick={handleLogout}
                     className="px-4 py-3 rounded-lg text-gray-700 hover:text-red-600 hover:bg-red-50 transition-colors text-left w-full"
                   >
-                    Выйти
+                    {t("common.logout")}
                   </button>
                 </>
               )}

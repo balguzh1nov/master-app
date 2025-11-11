@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
+import CityInput from "../components/CityInput";
 import { categories } from "../data/categories";
 import { login } from "../utils/auth";
 
@@ -11,8 +12,6 @@ interface FormData {
   subcategories: string[];
   experience: string;
   description: string;
-  priceFrom: string;
-  priceTo: string;
   city: string;
   serviceArea: string[];
   portfolio: string[];
@@ -22,7 +21,7 @@ const steps = [
   { id: 1, title: "Детали профиля", icon: "👤" },
   { id: 2, title: "Специализация", icon: "🪑" },
   { id: 3, title: "Опыт и услуги", icon: "💼" },
-  { id: 4, title: "Цены и локация", icon: "📍" },
+  { id: 4, title: "Локация", icon: "📍" },
 ];
 
 const serviceAreas = [
@@ -30,39 +29,6 @@ const serviceAreas = [
   "Выезд в офис",
   "Работа в мастерской",
   "Доставка и установка",
-];
-
-const cities = [
-  "Алматы",
-  "Астана",
-  "Шымкент",
-  "Актобе",
-  "Караганда",
-  "Тараз",
-  "Павлодар",
-  "Усть-Каменогорск",
-  "Семей",
-  "Атырау",
-  "Костанай",
-  "Кызылорда",
-  "Уральск",
-  "Петропавловск",
-  "Актау",
-  "Темиртау",
-  "Туркестан",
-  "Кокшетау",
-  "Экибастуз",
-  "Рудный",
-  "Жезказган",
-  "Жанаозен",
-  "Балхаш",
-  "Сарань",
-  "Каскелен",
-  "Кентау",
-  "Риддер",
-  "Жаркент",
-  "Алтай",
-  "Степногорск",
 ];
 
 export default function RegisterSpecialist() {
@@ -76,8 +42,6 @@ export default function RegisterSpecialist() {
     subcategories: [],
     experience: "",
     description: "",
-    priceFrom: "",
-    priceTo: "",
     city: "",
     serviceArea: [],
     portfolio: [],
@@ -471,53 +435,17 @@ export default function RegisterSpecialist() {
                 </div>
               )}
 
-              {/* Step 4: Prices and Location */}
+              {/* Step 4: Location */}
               {currentStep === 4 && (
                 <div>
                   <h1 className="text-2xl sm:text-3xl md:text-4xl font-bold text-gray-900 mb-2 sm:mb-3">
-                    Укажите цены и локацию
+                    Укажите вашу локацию
                   </h1>
                   <p className="text-gray-600 mb-4 sm:mb-6 text-xs sm:text-sm md:text-base">
-                    Это поможет клиентам понять стоимость ваших услуг и возможность работы в их районе
+                    Это поможет клиентам понять возможность работы в их районе
                   </p>
                   
                   <div className="space-y-4 sm:space-y-6">
-                    <div>
-                      <h3 className="text-lg font-semibold text-gray-900 mb-4">
-                        Стоимость работ
-                      </h3>
-                      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            От (₽)
-                          </label>
-                          <input
-                            type="number"
-                            value={formData.priceFrom}
-                            onChange={(e) => setFormData({ ...formData, priceFrom: e.target.value })}
-                            placeholder="5000"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
-                          />
-                        </div>
-
-                        <div>
-                          <label className="block text-sm font-medium text-gray-700 mb-2">
-                            До (₽)
-                          </label>
-                          <input
-                            type="number"
-                            value={formData.priceTo}
-                            onChange={(e) => setFormData({ ...formData, priceTo: e.target.value })}
-                            placeholder="100000"
-                            className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
-                          />
-                        </div>
-                      </div>
-                      <p className="text-xs text-gray-500 mt-2">
-                        Можно указать примерный диапазон или оставить пустым
-                      </p>
-                    </div>
-
                     <div>
                       <h3 className="text-lg font-semibold text-gray-900 mb-4">
                         Ваша локация
@@ -526,18 +454,12 @@ export default function RegisterSpecialist() {
                         <label className="block text-sm font-medium text-gray-700 mb-2">
                           Город
                         </label>
-                        <select
+                        <CityInput
                           value={formData.city}
-                          onChange={(e) => setFormData({ ...formData, city: e.target.value })}
+                          onChange={(value) => setFormData({ ...formData, city: value })}
+                          placeholder="Выберите город"
                           className="w-full px-4 py-3 border border-gray-300 rounded-xl focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent text-sm sm:text-base"
-                        >
-                          <option value="">Выберите город</option>
-                          {cities.map((city) => (
-                            <option key={city} value={city}>
-                              {city}
-                            </option>
-                          ))}
-                        </select>
+                        />
                       </div>
                     </div>
                   </div>
